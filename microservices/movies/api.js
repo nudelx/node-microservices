@@ -23,6 +23,7 @@ module.exports = function(api) {
     }, {})
   }
   api.get('/', function(req, res) {
+    console.log('api availability service')
     const resp = {
       'Available API': {
         movies: {
@@ -39,6 +40,7 @@ module.exports = function(api) {
   })
 
   api.get('/show', async function(req, res) {
+    console.log('api show service')
     const resp = await Promise.all([
       axios.get('http://localhost:5001/').then(res => res.data),
       axios.get('http://localhost:5002/').then(res => res.data)
