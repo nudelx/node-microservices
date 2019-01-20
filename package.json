@@ -14,7 +14,7 @@
   },
   "scripts": {
     "killall": "./node_modules/pm2/bin/pm2 delete index.js",
-    "list": "./node_modules/pm2/bin/pm2 list ",
+    "pm2list": "./node_modules/pm2/bin/pm2 list ",
     "start": "./node_modules/pm2/bin/pm2 start ",
     "stop": "./node_modules/pm2/bin/pm2 stop ",
     "reload": "./node_modules/pm2/bin/pm2 reload index.js",

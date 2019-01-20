@@ -1,6 +1,8 @@
 const axios = require('axios')
+const express = require('express')
+const api = express()
 
-module.exports = function(api) {
+const moviesAPI = function() {
   const calcTotalFinal = function(movies, tickets) {
     return Object.keys(movies).reduce(function(all, key) {
       const people = tickets[movies[key].id] || []
@@ -56,3 +58,6 @@ module.exports = function(api) {
     console.log(`tickets on port 5002 is up`)
   })
 }
+
+moviesAPI()
+module.exports = moviesAPI
