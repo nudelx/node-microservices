@@ -13,12 +13,12 @@
     "pm2": "^3.2.9"
   },
   "scripts": {
-    "killall": "./node_modules/pm2/bin/pm2 delete index.js",
-    "pm2list": "./node_modules/pm2/bin/pm2 list ",
-    "start": "./node_modules/pm2/bin/pm2 start ",
-    "stop": "./node_modules/pm2/bin/pm2 stop ",
-    "reload": "./node_modules/pm2/bin/pm2 reload index.js",
-    "activate": "./node_modules/pm2/bin/pm2 start -i 0 index.js",
-    "start:dev": "./node_modules/nodemon/bin/nodemon.js --inspect index.js"
+    "pm2": "pm2 delete index.js",
+    "pm2list": "pm2 list ",
+    "start": "pm2 start ",
+    "stop": "pm2 stop ",
+    "reload": "pm2 reload all ",
+    "activate": "pm2 start -i 0 index.js",
+    "start:dev": "nodemon --inspect index.js"
   }
 }
