@@ -1,6 +1,7 @@
 const axios = require('axios')
 const express = require('express')
 const api = express()
+const log = require('json-log').log
 
 const moviesAPI = function() {
   const calcTotalFinal = function(movies, tickets) {
@@ -25,7 +26,7 @@ const moviesAPI = function() {
     }, {})
   }
   api.get('/', function(req, res) {
-    console.log('api availability service')
+    log.info('api availability service')
     const resp = {
       'Available API': {
         movies: {
@@ -42,7 +43,7 @@ const moviesAPI = function() {
   })
 
   api.get('/show', async function(req, res) {
-    console.log('api show service')
+    log.info('api show service')
     const resp = await Promise.all([
       axios.get('http://localhost:5001/').then(res => res.data),
       axios.get('http://localhost:5002/').then(res => res.data)
@@ -53,9 +54,9 @@ const moviesAPI = function() {
   })
 
   api.listen(5000, function() {
-    console.log(`api is up`)
-    console.log(`movies on port 5001 is up`)
-    console.log(`tickets on port 5002 is up`)
+    log.info(`api is up`)
+    log.info(`movies on port 5001 is up`)
+    log.info(`tickets on port 5002 is up`)
   })
 }
 

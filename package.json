@@ -20,5 +20,8 @@
     "reload": "pm2 reload all ",
     "activate": "pm2 start -i 0 index.js",
     "start:dev": "nodemon --inspect index.js"
+  },
+  "devDependencies": {
+    "json-log": "^3.0.1"
   }
 }

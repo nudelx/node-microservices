@@ -6,8 +6,8 @@ const yodaQuotes = function() {
     const quotesDB = require('./dataBase.json')
     const random = quotesDB =>
       Math.floor(Math.random() * quotesDB.quotes.length)
-    console.log(`Random ${random(quotesDB)}`)
-    console.log(`yoda get /  ${process.pid}`)
+    log.info(`Random ${random(quotesDB)}`)
+    log.info(`yoda get /  ${process.pid}`)
     resp.send(`quote =>  ${quotesDB.quotes[random(quotesDB)]}`)
   })
 

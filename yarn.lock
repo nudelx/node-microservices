@@ -1481,6 +1481,13 @@ js-git@^0.7.8:
     git-sha1 "^0.1.2"
     pako "^0.2.5"
 
+json-log@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/json-log/-/json-log-3.0.1.tgz#aeea9ee0d264b70c08374a5cd55ffbfba1994773"
+  integrity sha512-iptMl9lsQBqPcE1qWBmVKek8c+4hI8Ip8cCTooJPA1+XYURxl/PQuCAuD47TCZd6rlE21yrbx213r5eZXsckBw==
+  dependencies:
+    is-typedarray "^1.0.0"
+
 json-stringify-safe@5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
