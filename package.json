@@ -22,6 +22,7 @@
     "start:dev": "nodemon --inspect index.js"
   },
   "devDependencies": {
-    "json-log": "^3.0.1"
+    "json-log": "^3.0.1",
+    "stompit": "^0.26.0"
   }
 }
