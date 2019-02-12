@@ -4,7 +4,7 @@ var connectOptions = {
   host: 'localhost',
   port: 61613,
   connectHeaders: {
-    host: '/',
+    host: 'localhost',
     // login: 'username',
     // passcode: 'password',
     'heart-beat': '5000,5000'
@@ -17,7 +17,15 @@ stompit.connect(connectOptions, function(error, client) {
     return
   }
 
-  var subscribeHeaders = {
+  client.on('error', function(error) {
+    console.error('This is error', error)
+  })
+
+  client.on('connecting', function(connector) {
+    console.log('Could not connect to ' + connector)
+  })
+
+  const subscribeHeaders = {
     destination: '/alex/test',
     ack: 'client-individual'
   }

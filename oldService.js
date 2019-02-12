@@ -117,6 +117,31 @@ const samMQProto = {
         }
       )
     )
+  },
+
+  setSendWorker: function(params) {
+    if (typeof params.worker !== 'function') {
+      throw new Error('worker should be a function')
+    }
+    this.worker = { ...params }
+    return this
+  },
+
+  startService: function() {
+    if (!this.worker && typeof this.worker.worker !== 'function') {
+      throw new Error('worker is not defined')
+    }
+    const { worker, params, destination, event, loopTimer } = this.worker
+
+    const output = worker(params)
+    if (loopTimer) {
+      this.timer = setInterval(() => {
+        const output = worker(params)
+        this.send(destination, event, JSON.stringify(output))
+      }, loopTimer || 1000)
+    } else {
+      this.send(destination, event, JSON.stringify(output))
+    }
   }
 }
 

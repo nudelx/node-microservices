@@ -119,7 +119,16 @@ channelPool.channel(function(error, channel) {
   })
 })
 */
+
+const test = function(params) {
+  return {
+    t: new Date().getTime(),
+    params
+  }
+}
+
 const mq = require('./oldService')
+
 mq.init({
   host: 'localhost',
   post: 3333,
@@ -131,4 +140,20 @@ mq.init({
   .subscribe('/alex/test', 'test_event', (e, m, b) => {})
   .send('/alex/test', null, JSON.stringify('blaaaaa '))
 
-// console.log(mq)
+// mq.init({
+//   host: 'localhost',
+//   post: 3333,
+//   connectHeaders: {
+//     login: 'bla',
+//     passcode: 'bla'
+//   }
+// })
+//   .subscribe('/alex/test', 'test_event', (e, m, b) => {})
+//   .setSendWorker({
+//     worker: test,
+//     params: { params: 'ddd' },
+//     destination: '/alex/test',
+//     event: 'alex:test',
+//     loopTimer: 5000 // default 1
+//   })
+//   .startService()
