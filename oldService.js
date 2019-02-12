@@ -95,6 +95,7 @@ const samMQProto = {
             if (error) throw 'Failed to read a message: ' + error
             cb(error, message, body)
             channel.ack(message)
+            this.actOnMessage(body)
           })
         })
       })
@@ -142,6 +143,15 @@ const samMQProto = {
     } else {
       this.send(destination, event, JSON.stringify(output))
     }
+  },
+  on: function(message, cb) {
+    this.actOnMessagePool = this.actOnMessagePool ? this.actOnMessagePool : {}
+    this.actOnMessagePool[message] = cb
+    return this
+  },
+  actOnMessage: function(msg) {
+    console.log('ACT on ', msg)
+    this.actOnMessagePool[msg]()
   }
 }
 

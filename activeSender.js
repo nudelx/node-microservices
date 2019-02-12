@@ -129,16 +129,17 @@ const test = function(params) {
 
 const mq = require('./oldService')
 
-mq.init({
-  host: 'localhost',
-  post: 3333,
-  connectHeaders: {
-    login: 'bla',
-    passcode: 'bla'
-  }
-})
-  .subscribe('/alex/test', 'test_event', (e, m, b) => {})
-  .send('/alex/test', null, JSON.stringify('blaaaaa '))
+// mq.init({
+//   host: 'localhost',
+//   post: 3333,
+//   connectHeaders: {
+//     login: 'bla',
+//     passcode: 'bla'
+//   }
+// })
+//   .subscribe('/alex/test', 'test_event', (e, m, b) => {})
+
+//   .send('/alex/test', null, JSON.stringify('blaaaaa '))
 
 // mq.init({
 //   host: 'localhost',
@@ -157,3 +158,19 @@ mq.init({
 //     loopTimer: 5000 // default 1
 //   })
 //   .startService()
+
+mq.init({
+  host: 'localhost',
+  post: 3333,
+  connectHeaders: {
+    login: 'bla',
+    passcode: 'bla'
+  }
+})
+  .subscribe('/alex/test', null, (e, m, b) => {
+    // console.log('basic ', b)
+  })
+  .on('alex::test1', function() {
+    console.log('ON MSG alex:test1')
+  })
+// .send('/alex/test', null, JSON.stringify('blaaaaa '))
