@@ -1,4 +1,6 @@
 const stompit = require('stompit')
+const log = require('json-log').log
+
 const samMQProto = {
   mergeObjects: function(base, merge) {
     return Object.keys(base).reduce((all, key) => {
@@ -55,11 +57,11 @@ const samMQProto = {
     connectFailOver.on('error', function(error) {
       var connectArgs = error.connectArgs
       var address = connectArgs.host + ':' + connectArgs.port
-      console.log('Could not connect to ' + address + ': ' + error.message)
+      log.info('Could not connect to ' + address + ': ' + error.message)
     })
 
     connectFailOver.on('connecting', function(connector) {
-      console.log(
+      log.info(
         'Connecting to ' +
           connector.serverProperties.remoteAddress.transportPath
       )
@@ -93,7 +95,9 @@ const samMQProto = {
         channel.subscribe(headers, (error, message) => {
           message.readString('utf-8', (error, body) => {
             if (error) throw 'Failed to read a message: ' + error
-            cb(error, message, body)
+            if (typeof cb === 'function') {
+              cb(error, message, body)
+            }
             channel.ack(message)
             this.actOnMessage(body)
           })
@@ -130,7 +134,7 @@ const samMQProto = {
 
   startService: function() {
     if (!this.worker && typeof this.worker.worker !== 'function') {
-      throw new Error('worker is not defined')
+      log.error('startService Error: worker is not defined')
     }
     const { worker, params, destination, event, loopTimer } = this.worker
 
@@ -150,14 +154,22 @@ const samMQProto = {
     return this
   },
   actOnMessage: function(msg) {
-    console.log('ACT on ', msg)
-    this.actOnMessagePool[msg]()
+    log.info('Received:', msg)
+    try {
+      const msgJson = JSON.parse(msg)
+      if (this.actOnMessagePool.hasOwnProperty(msgJson.type)) {
+        this.actOnMessagePool[msgJson.type](msg, this)
+      }
+    } catch (err) {
+      log.error('actOnMessage Error: ', err)
+    }
   }
 }
 
 const SamanageMQ = function() {
   this.conf = {}
   this.init = function(userConf) {
+    this.verbose = userConf.verbose
     this.conf = this.mergeConfiguration(userConf)
     this.connectFailOver = this.createFailOver()
     this.channelManager = new stompit.ChannelPool(this.connectFailOver, {})
