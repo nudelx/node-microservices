@@ -185,6 +185,7 @@ const samMQProto = {
       this.exitHandler.bind(null, { exit: true }, this)
     )
   },
+
   exitHandler: function(options, module) {
     const timers = Object.keys(module.timers)
     timers.length && log.info('Service Terminated with memory cleanup', options)
