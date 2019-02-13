@@ -125,10 +125,14 @@ const samMQProto = {
   },
 
   setSendWorker: function(params) {
-    if (typeof params.worker !== 'function') {
-      throw new Error('worker should be a function')
-    }
-    this.worker = { ...params }
+    console.log(params)
+    const paramsArr = Array.isArray(params) ? params : [params]
+    console.log(paramsArr)
+    this.worker = paramsArr.filter(w => {
+      res = typeof w.worker === 'function'
+      !res && log.error('worker should be a function otherwise will be skipped')
+      return res
+    })
     return this
   },
 
@@ -136,18 +140,24 @@ const samMQProto = {
     if (!this.worker && typeof this.worker.worker !== 'function') {
       log.error('startService Error: worker is not defined')
     }
-    const { worker, params, destination, event, loopTimer } = this.worker
 
-    const output = worker(params)
-    if (loopTimer) {
-      this.timer = setInterval(() => {
-        const output = worker(params)
+    this.worker.forEach((w, i) => {
+      const { worker, params, destination, event, loopTimer } = w
+      const output = worker(params)
+      if (loopTimer) {
+        this.timers[`timer_${i}`] = setInterval(() => {
+          const output = worker(params)
+          console.log('worker out ', output)
+          this.send(destination, event, JSON.stringify(output))
+        }, loopTimer || 1000)
+      } else {
         this.send(destination, event, JSON.stringify(output))
-      }, loopTimer || 1000)
-    } else {
-      this.send(destination, event, JSON.stringify(output))
-    }
+      }
+    })
+
+    this.activateClean(Object.keys(this.timers).length)
   },
+
   on: function(message, cb) {
     this.actOnMessagePool = this.actOnMessagePool ? this.actOnMessagePool : {}
     this.actOnMessagePool[message] = cb
@@ -163,11 +173,29 @@ const samMQProto = {
     } catch (err) {
       log.error('actOnMessage Error: ', err)
     }
+  },
+  activateClean: function(cleanCounter) {
+    process.stdin.resume()
+    process.on('exit', this.exitHandler.bind(null, { cleanup: true }, this))
+    process.on('SIGINT', this.exitHandler.bind(null, { exit: true }, this))
+    process.on('SIGUSR1', this.exitHandler.bind(null, { exit: true }, this))
+    process.on('SIGUSR2', this.exitHandler.bind(null, { exit: true }, this))
+    process.on(
+      'uncaughtException',
+      this.exitHandler.bind(null, { exit: true }, this)
+    )
+  },
+  exitHandler: function(options, module) {
+    const timers = Object.keys(module.timers)
+    timers.length && log.info('Service Terminated with memory cleanup', options)
+    timers.forEach(key => clearInterval(module.timers[key]))
+    process.exit()
   }
 }
 
 const SamanageMQ = function() {
   this.conf = {}
+  this.timers = {}
   this.init = function(userConf) {
     this.verbose = userConf.verbose
     this.conf = this.mergeConfiguration(userConf)

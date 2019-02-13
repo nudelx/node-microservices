@@ -127,6 +127,13 @@ const test = function(params) {
   }
 }
 
+const test2 = function(params) {
+  return {
+    t: new Date().getTime(),
+    params
+  }
+}
+
 const mq = require('./oldService')
 
 // mq.init({
@@ -141,26 +148,7 @@ const mq = require('./oldService')
 
 //   .send('/alex/test', null, JSON.stringify('blaaaaa '))
 
-// mq.init({
-//   host: 'localhost',
-//   post: 3333,
-//   connectHeaders: {
-//     login: 'bla',
-//     passcode: 'bla'
-//   }
-// })
-//   .subscribe('/alex/test', 'test_event', (e, m, b) => {})
-//   .setSendWorker({
-//     worker: test,
-//     params: { params: 'ddd' },
-//     destination: '/alex/test',
-//     event: 'alex:test',
-//     loopTimer: 5000 // default 1
-//   })
-//   .startService()
-
 mq.init({
-  verbose: 1,
   host: 'localhost',
   post: 3333,
   connectHeaders: {
@@ -168,13 +156,49 @@ mq.init({
     passcode: 'bla'
   }
 })
-  .subscribe('/alex/test')
-  .on('alex::test1', function() {
-    console.log('ON MSG alex:test1')
-  })
-  .on('alex::another', function(msg, service) {
-    console.log(msg)
-    console.log('ON MSG alex:another')
-    const res = { type: 'alex::test1', text: 'this is the answer' }
-    service.send('/alex/test', null, JSON.stringify(res))
-  })
+  .subscribe('/alex/test', 'test_event', (e, m, b) => {})
+  // .setSendWorker({
+  //   worker: test,
+  //   params: { params: 'ddd' },
+  //   destination: '/alex/test',
+  //   event: 'alex:test',
+  //   loopTimer: 5000 // default 1
+  // })
+
+  .setSendWorker([
+    {
+      worker: test,
+      params: { params: 'this is from worker 1 ' },
+      destination: '/alex/test',
+      event: 'alex:test',
+      loopTimer: 5000 // default 1
+    },
+    {
+      worker: test2,
+      params: { params: 'this is from worker 2 ' },
+      destination: '/alex/test',
+      event: 'alex:test',
+      loopTimer: 3000 // default 1
+    }
+  ])
+  .startService()
+
+// mq.init({
+//   verbose: 1,
+//   host: 'localhost',
+//   post: 3333,
+//   connectHeaders: {
+//     login: 'bla',
+//     passcode: 'bla'
+//   }
+// })
+//   .subscribe('/alex/test')
+//   .on('alex::test1', function() {
+//     console.log('ON MSG alex:test1')
+//   })
+//   .on('alex::another', function(msg, service) {
+//     console.log(msg)
+//     console.log('ON MSG alex:another')
+//     const res = { type: 'alex::test1', text: 'this is the answer' }
+//     service.send('/alex/test', null, JSON.stringify(res))
+//   })
