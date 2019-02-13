@@ -165,7 +165,7 @@ mq.init({
   //   loopTimer: 5000 // default 1
   // })
 
-  .setSendWorker([
+  .setSendWorkers([
     {
       worker: test,
       params: { params: 'this is from worker 1 ' },

@@ -124,7 +124,7 @@ const samMQProto = {
     )
   },
 
-  setSendWorker: function(params) {
+  setSendWorkers: function(params) {
     console.log(params)
     const paramsArr = Array.isArray(params) ? params : [params]
     console.log(paramsArr)
