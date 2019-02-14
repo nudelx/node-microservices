@@ -1,0 +1,53 @@
+#!/usr/bin/env node
+const stompit = require('stompit')
+const argv = require('yargs')
+  .usage('Usage: $0 -h [host/ip] -q [queue] -p [port| default: 61613]')
+  .demandOption(['q', 'h']).argv
+
+const connectOptions = {
+  host: argv.h,
+  port: argv.p || 61613,
+  timeout: 30000,
+  connectHeaders: {
+    host: argv.h,
+    // login: 'username',
+    // passcode: 'password',
+    'heart-beat': '5000,5000'
+  }
+}
+
+stompit.connect(connectOptions, function(error, client) {
+  if (error) {
+    console.log('connect error ' + error.message)
+    return
+  }
+
+  client.on('error', function(error) {
+    console.error('This is error', error)
+  })
+
+  client.on('connecting', function(connector) {
+    console.log('Could not connect to ' + connector)
+  })
+
+  const subscribeHeaders = {
+    destination: argv.q,
+    ack: 'client-individual'
+  }
+
+  client.subscribe(subscribeHeaders, function(error, message) {
+    if (error) {
+      console.log('subscribe error ' + error.message)
+      return
+    }
+
+    message.readString('utf-8', function(error, body) {
+      if (error) {
+        console.log('read message error ' + error.message)
+        return
+      }
+      console.log(' 📩  received message: ' + body)
+      client.ack(message)
+    })
+  })
+})

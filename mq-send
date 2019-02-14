@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+const stompit = require('stompit')
+const argv = require('yargs')
+  .usage(
+    'Usage: $0 -h [host/ip] -q [queue] -m [message] -p [port| default: 61613]'
+  )
+  .demandOption(['q', 'm', 'h']).argv
+
+stompit.connect({ host: argv.h, port: argv.p || 61613 }, (err, client) => {
+  const frame = client.send({ destination: argv.q })
+
+  frame.write(typeof argv.m === 'string' ? argv.m : JSON.stringify(argv.m))
+  frame.end()
+  client.disconnect()
+  console.log(' 📧  Message Sent !')
+})
