@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "json-log": "^3.0.1",
-    "stompit": "^0.26.0"
+    "stompit": "^0.26.0",
+    "yargs": "^13.1.0"
   }
 }
