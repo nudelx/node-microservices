@@ -12,7 +12,7 @@ const connectOptions = {
     host: argv.h,
     // login: 'username',
     // passcode: 'password',
-    'heart-beat': '5000,5000'
+    'heart-beat': '1000,2000'
   }
 }
 
@@ -31,8 +31,10 @@ stompit.connect(connectOptions, function(error, client) {
   })
 
   const subscribeHeaders = {
+    timeout: 30000,
     destination: argv.q,
-    ack: 'client-individual'
+    ack: 'client',
+    heartbeat: [5000, 5000]
   }
 
   client.subscribe(subscribeHeaders, function(error, message) {
