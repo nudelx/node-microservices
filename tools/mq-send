@@ -9,9 +9,12 @@ const argv = require('yargs')
     -m    [message] 
     -p    [port| default: 61613] 
     -u    [user] 
+    -t    [type]
     -pass [password]`
   )
   .demandOption(['q', 'm', 'h']).argv
+
+console.log(argv)
 
 stompit.connect(
   {
@@ -25,7 +28,7 @@ stompit.connect(
     }
   },
   (err, client) => {
-    const frame = client.send({ destination: argv.q })
+    const frame = client.send({ destination: argv.q, messageType: argv.t })
 
     frame.write(typeof argv.m === 'string' ? argv.m : JSON.stringify(argv.m))
     frame.end()

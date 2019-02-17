@@ -61,10 +61,10 @@ const samMQProto = {
     })
 
     connectFailOver.on('connecting', function(connector) {
-      log.info(
-        'Connecting to ' +
-          connector.serverProperties.remoteAddress.transportPath
-      )
+      // log.info(
+      //   'Connecting to ' +
+      //     connector.serverProperties.remoteAddress.transportPath
+      // )
     })
     return connectFailOver
   },
@@ -90,6 +90,7 @@ const samMQProto = {
 
   subscribe: function(destination, event, cb) {
     const headers = this.buildHeader(destination, event)
+
     this.connect()
       .then(channel => {
         channel.subscribe(headers, (error, message) => {
@@ -125,9 +126,7 @@ const samMQProto = {
   },
 
   setSendWorkers: function(params) {
-    console.log(params)
     const paramsArr = Array.isArray(params) ? params : [params]
-    console.log(paramsArr)
     this.worker = paramsArr.filter(w => {
       res = typeof w.worker === 'function'
       !res && log.error('worker should be a function otherwise will be skipped')
@@ -167,7 +166,10 @@ const samMQProto = {
     log.info('Received:', msg)
     try {
       const msgJson = JSON.parse(msg)
-      if (this.actOnMessagePool.hasOwnProperty(msgJson.type)) {
+      if (
+        this.actOnMessagePool &&
+        this.actOnMessagePool.hasOwnProperty(msgJson.type)
+      ) {
         this.actOnMessagePool[msgJson.type](msg, this)
       }
     } catch (err) {

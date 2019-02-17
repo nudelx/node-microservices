@@ -135,6 +135,7 @@ const test2 = function(params) {
 }
 
 const mq = require('./oldService')
+/// mode 1
 
 // mq.init({
 //   host: 'localhost',
@@ -148,25 +149,21 @@ const mq = require('./oldService')
 
 //   .send('/alex/test', null, JSON.stringify('blaaaaa '))
 
+// mode 2
 mq.init({
   host: 'localhost',
-  post: 3333,
+  // post: 3333,
   connectHeaders: {
-    login: 'bla',
-    passcode: 'bla'
+    // login: 'bla',
+    // passcode: 'bla'
   }
 })
-  .subscribe('/alex/test', 'test_event', (e, m, b) => {})
-  // .setSendWorker({
-  //   worker: test,
-  //   params: { params: 'ddd' },
-  //   destination: '/alex/test',
-  //   event: 'alex:test',
-  //   loopTimer: 5000 // default 1
-  // })
-
+  .subscribe('/alex/test', 'test', (e, m, b) => {
+    console.log('my message', b)
+  })
   .setSendWorkers([
     {
+      name: 'w1',
       worker: test,
       params: { params: 'this is from worker 1 ' },
       destination: '/alex/test',
@@ -174,6 +171,7 @@ mq.init({
       loopTimer: 5000 // default 1
     },
     {
+      name: 'w1',
       worker: test2,
       params: { params: 'this is from worker 2 ' },
       destination: '/alex/test',
@@ -182,6 +180,8 @@ mq.init({
     }
   ])
   .startService()
+
+// mode 3
 
 // mq.init({
 //   verbose: 1,

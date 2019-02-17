@@ -1,4 +1,4 @@
-const yoda = require('./microservices/yodaQuotes/yeadQuotes')
+const yoda = require('./microservices/yodaQuotes/yodaQuotes')
 const moviesService = require('./microservices/movies/movies')
 const ticketsService = require('./microservices/movies/tickets')
 const api = require('./microservices/movies/api')
