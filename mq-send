@@ -2,7 +2,14 @@
 const stompit = require('stompit')
 const argv = require('yargs')
   .usage(
-    'Usage: $0 -h [host/ip] -q [queue] -m [message] -p [port| default: 61613] -u [user] -pass [password]'
+    `Usage: <filename> -q "/test/test" -m 'message' -h localhost 
+    
+    -h    [host/ip] 
+    -q    [queue] 
+    -m    [message] 
+    -p    [port| default: 61613] 
+    -u    [user] 
+    -pass [password]`
   )
   .demandOption(['q', 'm', 'h']).argv
 
@@ -14,7 +21,7 @@ stompit.connect(
       'heart-beat': '1000,2000',
       host: argv.h,
       login: argv.u,
-      passcode: argv.pas
+      passcode: argv.pass
     }
   },
   (err, client) => {

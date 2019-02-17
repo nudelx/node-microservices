@@ -4,7 +4,13 @@ const exec = require('child_process').execSync
 
 const argv = require('yargs')
   .usage(
-    'Usage: $0 -h [host/ip] -q [queue] -p [port| default: 61613], -u [user] -pas [password]'
+    `Usage:  <filename> -h localhost -q /test/test
+    
+    -h    [host/ip] 
+    -q    [queue] 
+    -p    [port| default: 61613], 
+    -u    [user] 
+    -pass [password]`
   )
   .demandOption(['q', 'h']).argv
 
