@@ -2,7 +2,7 @@
 const stompit = require('stompit')
 const argv = require('yargs')
   .usage(
-    'Usage: $0 -h [host/ip] -q [queue] -m [message] -p [port| default: 61613] -u [user] -pas [password]'
+    'Usage: $0 -h [host/ip] -q [queue] -m [message] -p [port| default: 61613] -u [user] -pass [password]'
   )
   .demandOption(['q', 'm', 'h']).argv
 

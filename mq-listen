@@ -1,13 +1,15 @@
 #!/usr/bin/env node
 const stompit = require('stompit')
-const exec = require('child_process').exec
-exec('/usr/bin/clear')
+const exec = require('child_process').execSync
 
 const argv = require('yargs')
   .usage(
     'Usage: $0 -h [host/ip] -q [queue] -p [port| default: 61613], -u [user] -pas [password]'
   )
   .demandOption(['q', 'h']).argv
+
+console.log(exec('clear', { encoding: 'utf8' }))
+console.log('Listening on', argv, '\n\n')
 
 const connectOptions = {
   host: argv.h,
@@ -58,7 +60,7 @@ manager.connect(function(error, client, reconnect) {
         console.log('read message error ' + error.message)
         return
       }
-      console.log(' 📩  received message: ' + body)
+      console.log(' 📩  message received: \n \n' + body + '\n\n')
       client.ack(message)
     })
   })
