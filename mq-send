@@ -2,15 +2,27 @@
 const stompit = require('stompit')
 const argv = require('yargs')
   .usage(
-    'Usage: $0 -h [host/ip] -q [queue] -m [message] -p [port| default: 61613]'
+    'Usage: $0 -h [host/ip] -q [queue] -m [message] -p [port| default: 61613] -u [user] -pas [password]'
   )
   .demandOption(['q', 'm', 'h']).argv
 
-stompit.connect({ host: argv.h, port: argv.p || 61613 }, (err, client) => {
-  const frame = client.send({ destination: argv.q })
+stompit.connect(
+  {
+    host: argv.h,
+    port: argv.p || 61613,
+    connectHeaders: {
+      'heart-beat': '1000,2000',
+      host: argv.h,
+      login: argv.u,
+      passcode: argv.pas
+    }
+  },
+  (err, client) => {
+    const frame = client.send({ destination: argv.q })
 
-  frame.write(typeof argv.m === 'string' ? argv.m : JSON.stringify(argv.m))
-  frame.end()
-  client.disconnect()
-  console.log(' 📧  message sent !')
-})
+    frame.write(typeof argv.m === 'string' ? argv.m : JSON.stringify(argv.m))
+    frame.end()
+    client.disconnect()
+    console.log(' 📧  message sent !')
+  }
+)

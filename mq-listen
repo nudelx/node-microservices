@@ -4,7 +4,9 @@ const exec = require('child_process').exec
 exec('/usr/bin/clear')
 
 const argv = require('yargs')
-  .usage('Usage: $0 -h [host/ip] -q [queue] -p [port| default: 61613]')
+  .usage(
+    'Usage: $0 -h [host/ip] -q [queue] -p [port| default: 61613], -u [user] -pas [password]'
+  )
   .demandOption(['q', 'h']).argv
 
 const connectOptions = {
@@ -13,9 +15,9 @@ const connectOptions = {
   timeout: 30000,
   connectHeaders: {
     host: argv.h,
-    // login: 'username',
-    // passcode: 'password',
-    'heart-beat': '1000,2000'
+    'heart-beat': '1000,2000',
+    login: argv.u,
+    passcode: argv.pass
   }
 }
 const manager = new stompit.ConnectFailover([connectOptions], {
