@@ -1,6 +1,8 @@
 const express = require('express')
+const log = require('../lib/log')
 const app = express()
 const port = process.env.yodaPort || 3000
+
 const yodaQuotes = function() {
   app.get('/', function(req, resp) {
     const quotesDB = require('./dataBase.json')
