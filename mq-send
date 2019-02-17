@@ -12,5 +12,5 @@ stompit.connect({ host: argv.h, port: argv.p || 61613 }, (err, client) => {
   frame.write(typeof argv.m === 'string' ? argv.m : JSON.stringify(argv.m))
   frame.end()
   client.disconnect()
-  console.log(' 📧  Message Sent !')
+  console.log(' 📧  message sent !')
 })

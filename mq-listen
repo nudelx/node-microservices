@@ -34,7 +34,7 @@ stompit.connect(connectOptions, function(error, client) {
     timeout: 30000,
     destination: argv.q,
     ack: 'client',
-    heartbeat: [5000, 5000]
+    heartbeat: [1000, 3000]
   }
 
   client.subscribe(subscribeHeaders, function(error, message) {
