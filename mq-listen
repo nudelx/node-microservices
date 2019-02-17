@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 const stompit = require('stompit')
+const exec = require('child_process').exec
+exec('/usr/bin/clear')
+
 const argv = require('yargs')
   .usage('Usage: $0 -h [host/ip] -q [queue] -p [port| default: 61613]')
   .demandOption(['q', 'h']).argv
@@ -15,15 +18,20 @@ const connectOptions = {
     'heart-beat': '1000,2000'
   }
 }
+const manager = new stompit.ConnectFailover([connectOptions], {
+  maxReconnects: 10
+})
 
-stompit.connect(connectOptions, function(error, client) {
+manager.connect(function(error, client, reconnect) {
   if (error) {
-    console.log('connect error ' + error.message)
-    return
+    // console.log('connect error ' + error.message)
+    reconnect()
+    // return
   }
 
   client.on('error', function(error) {
-    console.error('This is error', error)
+    // console.error('This is error', error)
+    reconnect()
   })
 
   client.on('connecting', function(connector) {
@@ -39,7 +47,7 @@ stompit.connect(connectOptions, function(error, client) {
 
   client.subscribe(subscribeHeaders, function(error, message) {
     if (error) {
-      console.log('subscribe error ' + error.message)
+      // console.log('subscribe error ' + error.message)
       return
     }
 
