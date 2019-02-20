@@ -14,7 +14,7 @@ const argv = require('yargs')
   )
   .demandOption(['q', 'm', 'h']).argv
 
-console.log(argv)
+// console.log(argv)
 
 stompit.connect(
   {

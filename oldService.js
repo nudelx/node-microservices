@@ -199,6 +199,7 @@ const samMQProto = {
 const SamanageMQ = function() {
   this.conf = {}
   this.timers = {}
+  this.verbose = false
   this.init = function(userConf) {
     this.verbose = userConf.verbose
     this.conf = this.mergeConfiguration(userConf)
