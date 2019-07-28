@@ -36,7 +36,7 @@ const moviesAPI = function() {
     }, {})
   }
   api.get('/', function(req, res) {
-    log.info('api availability service')
+    log.info('api  service')
     const resp = {
       'Available API': {
         movies: {
@@ -67,6 +67,11 @@ const moviesAPI = function() {
     res.send({ final })
   })
 
+  api.get('/movies', async function(req, res) {
+    log.info('api movies service')
+    res.redirect(301, 'http://localhost:5001')
+  })
+
   api.get('/avail', async function(req, res) {
     log.info('api availability service')
     res.redirect(301, 'http://localhost:5003')
@@ -95,8 +100,6 @@ const moviesAPI = function() {
 
   api.listen(5000, function() {
     log.info(`api is up`)
-    log.info(`movies on port 5001 is up`)
-    log.info(`tickets on port 5002 is up`)
   })
 }
 
