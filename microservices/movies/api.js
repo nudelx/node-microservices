@@ -9,6 +9,7 @@ api.use(
     extended: true
   })
 )
+const port = 5000
 
 const moviesAPI = function() {
   const calcTotalFinal = function(movies, tickets) {
@@ -98,9 +99,7 @@ const moviesAPI = function() {
     }
   })
 
-  api.listen(5000, function() {
-    log.info(`api is up`)
-  })
+  api.listen(port, () => () => console.log(`Service listening at ${port}`))
 }
 
 moviesAPI()

@@ -19,7 +19,7 @@ const availabilityService = function() {
     }, {})
     res.send(calc)
   })
-  app.listen(port)
+  app.listen(port, () => console.log(`Service listening at ${port}`))
 }
 
 availabilityService()

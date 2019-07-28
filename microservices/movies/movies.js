@@ -10,7 +10,7 @@ const moviesService = function() {
     log.info('get movies')
     res.send(movieData.getItem('movies.json'))
   })
-  app.listen(port)
+  app.listen(port, () => console.log(`Service listening at ${port}`))
 }
 
 moviesService()
