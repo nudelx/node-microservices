@@ -191,14 +191,13 @@ mq.init({
     login: 'bla',
     passcode: 'bla'
   }
-})
-  .subscribe('/alex/test')
-  .on('alex::test1', function() {
-    console.log('ON MSG alex:test1')
-  })
-  .on('alex::another', function(msg, service) {
-    console.log(msg)
-    console.log('ON MSG alex:another')
-    const res = { type: 'alex::test1', text: 'this is the answer' }
-    service.send('/alex/test', null, JSON.stringify(res))
-  })
+}).subscribe('/alex/test')
+// .on('alex::test1', function() {
+//   console.log('ON MSG alex:test1')
+// })
+// .on('alex::another', function(msg, service) {
+//   console.log(msg)
+//   console.log('ON MSG alex:another')
+//   const res = { type: 'alex::test1', text: 'this is the answer' }
+//   service.send('/alex/test', null, JSON.stringify(res))
+// })

@@ -1,5 +1,5 @@
 {
-  "1": [{ "name": "Alex", "num": 30 }, { "name": "Anna", "num": 170 }],
-  "2": [{ "name": "Eli", "num": 19 }, { "name": "Anna", "num": 30 }],
-  "3": [{ "name": "Nir", "num": 119 }, { "name": "David", "num": 130 }]
+  "1": [{ "name": "Alex", "num": 21 }, { "name": "Anna", "num": 4 }],
+  "2": [{ "name": "Eli", "num": 2 }, { "name": "Stas", "num": 4 }],
+  "3": [{ "name": "David", "num": 2 }, { "name": "Alex", "num": 3 }]
 }

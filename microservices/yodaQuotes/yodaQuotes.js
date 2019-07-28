@@ -16,6 +16,6 @@ const yodaQuotes = function() {
   app.listen(port)
 }
 
-yodaQuotes()
+// yodaQuotes()
 
 module.exports = yodaQuotes
