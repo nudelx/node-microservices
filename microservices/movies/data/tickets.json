@@ -1,1 +1,5 @@
-{"1":[{"name":"Alex","num":465},{"name":"Anna","num":4}],"2":[{"name":"Eli","num":2},{"name":"Stas","num":4}],"3":[{"name":"David","num":2},{"name":"Alex","num":3}]}
+{
+  "1": [{ "name": "Alex", "num": 27 }, { "name": "Anna", "num": 4 }],
+  "2": [{ "name": "Eli", "num": 2 }, { "name": "Stas", "num": 4 }],
+  "3": [{ "name": "David", "num": 2 }, { "name": "Alex", "num": 3 }]
+}

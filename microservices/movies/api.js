@@ -2,6 +2,13 @@ const axios = require('axios')
 const express = require('express')
 const api = express()
 const log = require('json-log').log
+var bodyParser = require('body-parser')
+api.use(bodyParser.json())
+api.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+)
 
 const moviesAPI = function() {
   const calcTotalFinal = function(movies, tickets) {
@@ -63,6 +70,27 @@ const moviesAPI = function() {
   api.get('/avail', async function(req, res) {
     log.info('api availability service')
     res.redirect(301, 'http://localhost:5003')
+  })
+
+  api.post('/order', async function(req, res) {
+    log.info('api order service')
+    const data = req.body
+    const movieId = req.body.movie
+    const resp = await axios
+      .get('http://localhost:5003/')
+      .catch(err => console.log(err))
+    const canOrder = resp.data[movieId].canOrder
+    log.info('result ', resp.data)
+    log.info('is can order', canOrder)
+    if (canOrder) {
+      const post = await axios
+        .post('http://localhost:5002/', data)
+        .catch(err => console.log(err))
+      log.info('post', post.data)
+      res.send({ order: post.data })
+    } else {
+      res.send({ msg: 'no free seats' })
+    }
   })
 
   api.listen(5000, function() {
