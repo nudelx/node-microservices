@@ -18,7 +18,10 @@ const moviesAPI = function() {
       )
 
       all[key] = {
-        AVAILABLE: movies[key].max - names.total,
+        AVAILABLE:
+          movies[key].max - names.total > 0
+            ? movies[key].max - names.total
+            : null,
         SOLD: names.total,
         BY: names.by
       }
@@ -36,6 +39,10 @@ const moviesAPI = function() {
         tickets: {
           port: 5002,
           get: '/'
+        },
+        availability: {
+          port: 5003,
+          get: '/'
         }
       }
     }
@@ -51,6 +58,11 @@ const moviesAPI = function() {
     const [movies, tickets] = resp
     const final = calcTotalFinal(movies, tickets)
     res.send({ final })
+  })
+
+  api.get('/avail', async function(req, res) {
+    log.info('api availability service')
+    res.redirect(301, 'http://localhost:5003')
   })
 
   api.listen(5000, function() {
