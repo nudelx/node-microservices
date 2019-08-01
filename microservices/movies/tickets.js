@@ -33,17 +33,23 @@ const updateTickets = (data, tickets) => {
   return true
 }
 
+const order = postData => {
+  const tickets = JSON.parse(getAllData())
+  return updateTickets(postData, tickets)
+}
+
+const getAllData = () => movieData.getItem('tickets.json')
+
 const ticketsService = function() {
   app.get('/', function(req, res) {
     log.info('get tickets')
-    res.send(movieData.getItem('tickets.json'))
+    res.send(getAllData())
   })
 
   app.post('/', function(req, res) {
     log.info('order tickets service')
     const postData = req.body
-    const tickets = JSON.parse(movieData.getItem('tickets.json'))
-    updateTickets(postData, tickets) ? res.sendStatus(200) : res.sendStatus(500)
+    order(postData) ? res.sendStatus(200) : res.sendStatus(500)
   })
 
   app.listen(port, () => console.log(`Service listening at ${port}`))
