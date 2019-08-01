@@ -54,5 +54,71 @@ const ticketsService = function() {
 
   app.listen(port, () => console.log(`Service listening at ${port}`))
 }
-ticketsService()
+
+const ticketsOnQueue = function() {
+  const stompit = require('stompit')
+  var connectOptions = {
+    host: 'localhost',
+    port: 61613,
+    connectHeaders: {
+      host: '/',
+      login: 'username',
+      passcode: 'password',
+      'heart-beat': '5000,5000'
+    }
+  }
+
+  stompit.connect(connectOptions, function(error, client) {
+    if (error) {
+      console.log('connect error ' + error.message)
+      return
+    }
+
+    var sendHeaders = {
+      destination: 'demo',
+      'content-type': 'text/plain'
+    }
+
+    // var frame = client.send(sendHeaders)
+    // frame.write('hello')
+    // frame.end()
+
+    var subscribeHeaders = {
+      destination: 'demo',
+      ack: 'client-individual'
+    }
+
+    client.subscribe(subscribeHeaders, function(error, message) {
+      if (error) {
+        console.log('subscribe error ' + error.message)
+        return
+      }
+
+      message.readString('utf-8', function(error, body) {
+        if (error) {
+          console.log('read message error ' + error.message)
+          return
+        }
+
+        console.log('received message: ' + body)
+        console.log(typeof body)
+        let parsed = {}
+        try {
+          parsed = JSON.parse(body) || {}
+        } catch (err) {
+          console.log(err)
+        }
+        console.log('PARSED', parsed)
+        parsed.tickets
+          ? console.log('POST', order(parsed))
+          : console.log('GET', getAllData())
+        client.ack(message)
+      })
+    })
+  })
+}
+
+// ticketsService()
+ticketsOnQueue()
+
 module.exports = ticketsService
