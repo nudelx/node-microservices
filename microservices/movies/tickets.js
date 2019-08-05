@@ -100,17 +100,12 @@ const ticketsOnQueue = function() {
           return
         }
 
-        console.log('received message: ' + body)
-        console.log(typeof body)
         let parsed = {}
         try {
           parsed = JSON.parse(body) || {}
-        } catch (err) {
-          console.log(err)
-        }
-        console.log('PARSED', parsed)
+        } catch (err) {}
         parsed.tickets
-          ? console.log('POST', order(parsed))
+          ? console.log('ORDER', order(parsed))
           : console.log('GET', getAllData())
         client.ack(message)
       })
