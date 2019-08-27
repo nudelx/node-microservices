@@ -113,7 +113,7 @@ const ticketsOnQueue = function() {
   })
 }
 
-// ticketsService()
-ticketsOnQueue()
+ticketsService()
+// ticketsOnQueue()
 
 module.exports = ticketsService
