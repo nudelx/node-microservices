@@ -40,18 +40,18 @@ const moviesAPI = function() {
   })
 
   api.post('/order', async function(req, res) {
-    log.info('api order service')
-    const data = req.body
-    const movieId = req.body.movie
-    const requestedTickets = req.body.tickets
+    log.info('api order service', req, res)
+    const order = req.body
+    const movieId = order.movie
+    const requestedTickets = order.tickets
 
-    const resp = await axios
+    const avail = await axios
       .get('http://localhost:5003/')
       .catch(err => console.log(err))
-    const canOrder = resp.data[movieId].canOrder
-    const freeSeats = resp.data[movieId].free
+    const canOrder = avail.data[movieId].canOrder
+    const freeSeats = avail.data[movieId].free
 
-    log.info('result ', resp.data)
+    log.info('result ', avail.data)
     log.info('can order', canOrder)
     log.info('has amount seats', freeSeats)
     log.info('requested', requestedTickets)
@@ -59,7 +59,7 @@ const moviesAPI = function() {
 
     if (canOrder && requestedTickets <= freeSeats) {
       const post = await axios
-        .post('http://localhost:5002/', data)
+        .post('http://localhost:5002/', order)
         .catch(err => console.log(err))
       log.info('post', post.data)
       res.send({ order: post.data })

@@ -32,12 +32,12 @@ const ticketsService = function() {
   app.listen(port, () => console.log(`Service listening at ${port}`))
 }
 
-// ticketsService()
+ticketsService()
 
-ticketsOnQueue(msg => {
-  msg.tickets
-    ? console.log('ORDER', order(msg, movieData))
-    : console.log('GET', getAllData(movieData))
-})
+// ticketsOnQueue(msg => {
+//   msg.tickets
+//     ? console.log('ORDER', order(msg, movieData))
+//     : console.log('GET', getAllData(movieData))
+// })
 
 module.exports = ticketsService
