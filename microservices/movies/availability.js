@@ -1,4 +1,5 @@
 const LocalStorage = require('node-localstorage').LocalStorage
+const { reduceSeats } = require('./microHelper')
 const movieData = new LocalStorage('./microservices/movies/data')
 const log = require('json-log').log
 const express = require('express')
@@ -10,13 +11,7 @@ const availabilityService = function() {
     log.info('get free seats')
     const movies = JSON.parse(movieData.getItem('movies.json'))
     const orders = JSON.parse(movieData.getItem('tickets.json'))
-    const calc = Object.keys(movies).reduce((all, item) => {
-      const movieId = movies[item].id
-      const max = movies[item].max
-      const total = orders[movieId].reduce((sum, order) => sum + order.num, 0)
-      const free = max - total
-      return { ...all, [movieId]: { max, free, canOrder: free > 0 } }
-    }, {})
+    const calc = reduceSeats(movies, orders)
     res.send(calc)
   })
   app.listen(port, () => console.log(`Service listening at ${port}`))
