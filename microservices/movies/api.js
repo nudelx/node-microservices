@@ -2,6 +2,7 @@ const axios = require('axios')
 const express = require('express')
 const api = express()
 const log = require('json-log').log
+const port = 5000
 var bodyParser = require('body-parser')
 api.use(bodyParser.json())
 api.use(
@@ -9,7 +10,6 @@ api.use(
     extended: true
   })
 )
-const port = 5000
 
 const moviesAPI = function() {
   const calcTotalFinal = function(movies, tickets) {
@@ -99,7 +99,7 @@ const moviesAPI = function() {
     }
   })
 
-  api.listen(port, () => () => console.log(`Service listening at ${port}`))
+  api.listen(port, () => console.log(`Service listening at ${port}`))
 }
 
 moviesAPI()
