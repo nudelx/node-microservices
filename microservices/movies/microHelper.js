@@ -33,7 +33,51 @@ const order = (postData, movieData) => {
 
 const getAllData = movieData => movieData.getItem('tickets.json')
 
+const calcTotalFinal = function(movies, tickets) {
+  return Object.keys(movies).reduce(function(all, key) {
+    const people = tickets[movies[key].id] || []
+    const names = people.reduce(
+      function(all, item) {
+        return {
+          by: [...all.by, item.name],
+          total: all.total + item.num
+        }
+      },
+      { by: [], total: 0 }
+    )
+
+    all[key] = {
+      AVAILABLE:
+        movies[key].max - names.total > 0
+          ? movies[key].max - names.total
+          : null,
+      SOLD: names.total,
+      BY: names.by
+    }
+    return all
+  }, {})
+}
+
+const apiInfo = {
+  'Available API': {
+    movies: {
+      port: 5001,
+      get: '/'
+    },
+    tickets: {
+      port: 5002,
+      get: '/'
+    },
+    availability: {
+      port: 5003,
+      get: '/'
+    }
+  }
+}
+
 module.exports = {
+  apiInfo,
+  calcTotalFinal,
   reduceSeats,
   updateTickets,
   getAllData,
