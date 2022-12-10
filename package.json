@@ -6,7 +6,7 @@
   "dependencies": {
     "axios": "^0.18.1",
     "body-parser": "^1.19.0",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "loadtest": "^3.0.4",
     "localStorage": "^1.0.4",
     "node-localstorage": "^1.3.1",
